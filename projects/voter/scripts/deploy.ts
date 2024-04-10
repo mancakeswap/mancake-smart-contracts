@@ -15,7 +15,7 @@ const main = async () => {
   const VEMan = await ethers.getContractFactory('VEMan')
   let veman = await VEMan.deploy(
     ethers.constants.AddressZero, // no need for CakePool migration
-    mcV3DeployedContracts.CakeToken,
+    mcV3DeployedContracts.MancakeToken,
     ethers.constants.AddressZero, // no need for CakePool migration,
     config.txConfig
   )

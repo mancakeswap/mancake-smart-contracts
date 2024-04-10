@@ -13,7 +13,7 @@ import PancakeV3LmPoolDeployerArtifact from "@pancakeswap/v3-lm-pool/artifacts/c
 import TestLiquidityAmountsArtifact from "@pancakeswap/v3-periphery/artifacts/contracts/test/LiquidityAmountsTest.sol/LiquidityAmountsTest.json";
 
 import ERC20MockArtifact from "./ERC20Mock.json";
-import CakeTokenArtifact from "./CakeToken.json";
+import CakeTokenArtifact from "./MancakeToken.json";
 import SyrupBarArtifact from "./SyrupBar.json";
 import MasterChefArtifact from "./MasterChef.json";
 import MasterChefV2Artifact from "./MasterChefV2.json";
@@ -80,8 +80,8 @@ describe("MasterChefV3", function () {
     // await pancakeV3Factory.setOwner(pancakeV3FactoryOwner.address);
 
     // Prepare for master chef v3
-    const CakeToken = await ethers.getContractFactoryFromArtifact(CakeTokenArtifact);
-    const cakeToken = await CakeToken.deploy();
+    const MancakeToken = await ethers.getContractFactoryFromArtifact(CakeTokenArtifact);
+    const cakeToken = await MancakeToken.deploy();
 
     const SyrupBar = await ethers.getContractFactoryFromArtifact(SyrupBarArtifact);
     const syrupBar = await SyrupBar.deploy(cakeToken.address);

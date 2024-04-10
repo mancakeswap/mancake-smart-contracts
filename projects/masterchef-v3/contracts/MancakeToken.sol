@@ -5,8 +5,8 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-// CakeToken with Governance.
-contract CakeToken is ERC20("MancakeSwap Token", "Cake"), Ownable {
+// Mancake with Governance.
+contract MancakeToken is ERC20("MancakeSwap Token", "MAN"), Ownable {
     using SafeMath for uint256;
 
     /// @dev Creates `_amount` token to `_to`. Must only be called by the owner (MasterChef).

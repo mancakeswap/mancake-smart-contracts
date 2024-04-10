@@ -27,7 +27,7 @@ async function main() {
   const v3PeripheryDeployedContracts = await import(`@pancakeswap/v3-periphery/deployed/${networkName}.json`);
   const masterchefV3DeployedContracts = await import(`@pancakeswap/masterchef-v3/deployed/${networkName}.json`);
 
-  // const Cake = await ethers.getContractFactory("CakeToken");
+  // const Cake = await ethers.getContractFactory("MancakeToken");
   // const cake = await Cake.deploy();
   // await cake.deployed();
   // console.log("Cake deployed to:", cake.address);
@@ -46,7 +46,7 @@ async function main() {
   // const masterchefv2 = await MasterChefV2.deploy(masterchef.address, cake.address, 0, devAddr);
   const masterchefv2 = await MasterChefV2.deploy(
     masterchefV3DeployedContracts.MasterChef,
-    masterchefV3DeployedContracts.CakeToken,
+    masterchefV3DeployedContracts.MancakeToken,
     2,
     devAddr
   );
@@ -70,7 +70,7 @@ async function main() {
     JSON.stringify(
       {
         ...masterchefV3DeployedContracts,
-        // CakeToken: cake.address,
+        // MancakeToken: cake.address,
         // SyrupBar: syrup.address,
         // MasterChef: masterchef.address,
         MasterChefV2: masterchefv2.address,

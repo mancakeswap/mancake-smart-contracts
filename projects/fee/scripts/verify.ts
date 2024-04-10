@@ -17,7 +17,7 @@ async function main() {
   await verifyContract(feeDeployedContracts.MasterChefV3Receiver, [
     mcV3DeployedContracts.MasterChefV2,
     mcV3DeployedContracts.MasterChefV3,
-    mcV3DeployedContracts.CakeToken,
+    mcV3DeployedContracts.MancakeToken,
     0,
   ])
 }

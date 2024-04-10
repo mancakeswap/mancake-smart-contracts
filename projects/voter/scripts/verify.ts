@@ -16,7 +16,7 @@ async function main() {
   console.log('Verify voter')
   // await verifyContract(deployedContractsVoter.VEMan, [
   //   ethers.constants.AddressZero,
-  //   mcV3DeployedContracts.CakeToken,
+  //   mcV3DeployedContracts.MancakeToken,
   //   ethers.constants.AddressZero,
   // ])
   // await verifyContract(deployedContractsVoter.GaugeVoting, [deployedContractsVoter.VEMan])

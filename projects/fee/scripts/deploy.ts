@@ -17,7 +17,7 @@ async function main() {
   const v3receiver = await MasterChefV3Receiver.deploy(
     mcV3DeployedContracts.MasterChefV2,
     mcV3DeployedContracts.MasterChefV3,
-    mcV3DeployedContracts.CakeToken,
+    mcV3DeployedContracts.MancakeToken,
     0,
     config.txConfig
   )
