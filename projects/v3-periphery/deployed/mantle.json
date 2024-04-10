@@ -1,0 +1,10 @@
+{
+  "MulticallV2": "0x6d69Db85754f9d793c0e21fEcf0D90E9F28431D1",
+  "V3Migrator": "0x10c11523FEE0E5D887F8388da921366a54533658",
+  "QuoterV2": "0x079d042F96279d2a7E0D3fBfEfb4fb10101f8C33",
+  "TickLens": "0xD763111b244F9E107e1cf82b1692B0fBc5c7f6A3",
+  "NFTDescriptorEx": "0xCAbc590E6C8089Ef4f65dF8CFA707016471f7Ac6",
+  "NonfungibleTokenPositionDescriptor": "0x6D712b4dDdc791e857bB547AD360FDe9862e9b7a",
+  "NonfungiblePositionManager": "0xf3435df9F5Ba44Bf59036A0c59fBFBC0C0D463F7",
+  "PancakeInterfaceMulticall": "0x837a0deea22668ab7c86b28938eBd0fd3DD26F2a"
+}

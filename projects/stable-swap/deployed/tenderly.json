@@ -1,0 +1,9 @@
+{
+  "StableSwapLPFactory": "0x1a62f5252618a511F7A347d419819402EC11b3FE",
+  "StableSwapTwoPoolDeployer": "0xd37fb54b6b43de428922641c7C8D4992aC3a5962",
+  "StableSwapThreePoolDeployer": "0x1f462515487cD73189E0E55165051f57eC4226Fb",
+  "StableSwapFactory": "0x7d37c56Ce0a1e88c7D27584fB6ae15521567F8ef",
+  "StableSwapTwoPoolInfo": "0x7E54B499B19C884237500cb781A968fb2a945981",
+  "StableSwapThreePoolInfo": "0x2Ef58246262bbc7fdDd5dbF3351C09677D35B77D",
+  "StableSwapInfo": "0x4Eb7620719021BFbB5b204cae80b8f0b025Ca6b7"
+}

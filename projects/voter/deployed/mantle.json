@@ -1,0 +1,8 @@
+{
+  "VECaVEManke": "0xc42C2c29B9F658444b48B70D21EA5fB953555ac1",
+  "GaugeVoting": "0xb84E4FbEea10B3db3eA16c721c4d8957E91C47Da",
+  "GaugeVotingAdminUtil": "0xb11A6fAb81546516274767edD8b0131dF3c65391",
+  "GaugeVotingCalc": "0x1347E04eb4fF79012BC3f23fCd97549eC7a0bB31",
+  "RevenueSharingPoolFactory": "0x4A78536ea98670f267A13A0233178bBAE7522f77",
+  "RevenueSharingPoolGateway": "0x0e8239c1E8DDe909dC015cfa18B4eb7b9F1bc221"
+}
