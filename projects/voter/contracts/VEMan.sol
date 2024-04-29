@@ -584,35 +584,6 @@ contract VEMan is Ownable, ReentrancyGuard {
         }
     }
 
-    /// @notice Migrate from cake pool.
-    function migrateFromCakePool() external nonReentrant {
-        require(initialization, '! initialized');
-
-        (uint256 shares, , , , , uint256 lockEndTime, uint256 userBoostedShare, , ) = CakePool.userInfo(msg.sender);
-
-        require(lockEndTime > block.timestamp, 'Lock expired');
-
-        UserInfo storage user = userInfo[msg.sender];
-        require(user.cakePoolType == 0, 'Already migrated');
-
-        user.cakePoolType = MIGRATION_FROM_CAKE_POOL_FLAG;
-        uint256 totalShares = CakePool.totalShares();
-        uint256 balanceOfCakePool = CakePool.balanceOf();
-        // Subtract 1 is for precision round loss
-        uint256 lockedCakeAmount = (shares * balanceOfCakePool) / totalShares - userBoostedShare - 1;
-        // will lock by proxy smart contract
-        address proxy = ProxyForCakePoolFactory.deploy(msg.sender);
-        isCakePoolProxy[proxy] = true;
-        user.cakePoolProxy = proxy;
-        user.migrationTime = uint48(block.timestamp);
-        user.cakeAmount = uint128(lockedCakeAmount);
-        user.lockEndTime = uint48(lockEndTime);
-
-        IProxyForCakePool(proxy).createLockForProxy(lockedCakeAmount, lockEndTime);
-
-        emit MigrateFromCakePool(msg.sender, proxy, lockedCakeAmount, lockEndTime);
-    }
-
     /// @notice Delegate from cake pool.
     /// @dev this function will call one function in delegator smart contract, DelegatorSC.delegate(address user, uint256 amount, uint256 endTime).
     /// @param _delegator delegation address

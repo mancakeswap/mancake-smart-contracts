@@ -64,9 +64,6 @@ interface IVECake {
     /// @param _user The address of a user
     function balanceOf(address _user) external view returns (uint256);
 
-    /// @notice Migrate from cake pool.
-    function migrateFromCakePool() external;
-
     /// @notice Delegate from cake pool.
     /// @dev this function will call one function in delegator smart contract, like this: DelegatorSC.delegate(address user, uint256 amount, uint256 endTime).
     /// @param _delegator delegator address
