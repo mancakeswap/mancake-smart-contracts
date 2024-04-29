@@ -84,8 +84,8 @@ contract MasterChefV2 is Ownable, ReentrancyGuard {
     uint256 public totalRegularAllocPoint;
     /// @notice Total special allocation points. Must be the sum of all special pools' allocation points.
     uint256 public totalSpecialAllocPoint;
-    ///  @notice 40 cakes per block in MCV1
-    uint256 public constant MASTERCHEF_CAKE_PER_BLOCK = 40 * 1e18;
+    ///  @notice 10 cakes per block in MCV1
+    uint256 public constant MASTERCHEF_CAKE_PER_BLOCK = 10 * 1e18;
     uint256 public constant ACC_CAKE_PRECISION = 1e18;
 
     /// @notice Basic boost factor, none boosted user's boost factor
@@ -96,11 +96,11 @@ contract MasterChefV2 is Ownable, ReentrancyGuard {
     uint256 public constant CAKE_RATE_TOTAL_PRECISION = 1e12;
     /// @notice The last block number of CAKE burn action being executed.
     /// @notice CAKE distribute % for burn
-    uint256 public cakeRateToBurn = 643750000000;
+    uint256 public cakeRateToBurn = 1000000000000;
     /// @notice CAKE distribute % for regular farm pool
-    uint256 public cakeRateToRegularFarm = 62847222222;
+    uint256 public cakeRateToRegularFarm = 0;
     /// @notice CAKE distribute % for special pools
-    uint256 public cakeRateToSpecialFarm = 293402777778;
+    uint256 public cakeRateToSpecialFarm = 0;
 
     uint256 public lastBurnedBlock;
 
