@@ -11,6 +11,7 @@ import './libraries/LmTick.sol';
 
 import './interfaces/IPancakeV3LmPool.sol';
 import './interfaces/IMasterChefV3.sol';
+import './interfaces/IPancakeV3LmPoolDeployer.sol';
 
 contract MancakeV3LmPool is IPancakeV3LmPool {
     using LowGasSafeMath for uint256;
@@ -47,10 +48,11 @@ contract MancakeV3LmPool is IPancakeV3LmPool {
         _;
     }
 
-    constructor(address _pool, address _masterChef, uint32 rewardStartTimestamp) {
-        pool = IPancakeV3Pool(_pool);
-        masterChef = IMasterChefV3(_masterChef);
-        lastRewardTimestamp = rewardStartTimestamp;
+    constructor() {
+        (address poolAddress, address masterChefAddress) = IPancakeV3LmPoolDeployer(msg.sender).parameters();
+        pool = IPancakeV3Pool(poolAddress);
+        masterChef = IMasterChefV3(masterChefAddress);
+        lastRewardTimestamp = uint32(block.timestamp);
     }
 
     function accumulateReward(uint32 currTimestamp) external override onlyPoolOrMasterChef {
