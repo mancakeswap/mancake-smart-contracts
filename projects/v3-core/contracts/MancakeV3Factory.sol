@@ -19,6 +19,8 @@ contract MancakeV3Factory is IPancakeV3Factory {
     mapping(address => mapping(address => mapping(uint24 => address))) public override getPool;
     /// @inheritdoc IPancakeV3Factory
     mapping(uint24 => TickSpacingExtraInfo) public override feeAmountTickSpacingExtraInfo;
+    /// @inheritdoc IPancakeV3Factory
+    mapping(uint24 => DefaultFeeProtocol) public override feeDefaultProtocol;
     mapping(address => bool) private _whiteListAddresses;
 
     address public lmPoolDeployer;
@@ -40,20 +42,38 @@ contract MancakeV3Factory is IPancakeV3Factory {
 
         feeAmountTickSpacing[100] = 1;
         feeAmountTickSpacingExtraInfo[100] = TickSpacingExtraInfo({whitelistRequested: false, enabled: true});
+        feeDefaultProtocol[100] = DefaultFeeProtocol({feeProtocol0: 10000, feeProtocol1: 10000});
         emit FeeAmountEnabled(100, 1);
         emit FeeAmountExtraInfoUpdated(100, false, true);
+        emit FeeDefaultProtocolUpdated(100, 10000, 10000);
+
+        feeAmountTickSpacing[250] = 5;
+        feeAmountTickSpacingExtraInfo[250] = TickSpacingExtraInfo({whitelistRequested: false, enabled: true});
+        feeDefaultProtocol[250] = DefaultFeeProtocol({feeProtocol0: 10000, feeProtocol1: 10000});
+        emit FeeAmountEnabled(250, 5);
+        emit FeeAmountExtraInfoUpdated(250, false, true);
+        emit FeeDefaultProtocolUpdated(250, 10000, 10000);
+
         feeAmountTickSpacing[500] = 10;
         feeAmountTickSpacingExtraInfo[500] = TickSpacingExtraInfo({whitelistRequested: false, enabled: true});
+        feeDefaultProtocol[500] = DefaultFeeProtocol({feeProtocol0: 10000, feeProtocol1: 10000});
         emit FeeAmountEnabled(500, 10);
         emit FeeAmountExtraInfoUpdated(500, false, true);
+        emit FeeDefaultProtocolUpdated(500, 10000, 10000);
+
         feeAmountTickSpacing[2500] = 50;
         feeAmountTickSpacingExtraInfo[2500] = TickSpacingExtraInfo({whitelistRequested: false, enabled: true});
+        feeDefaultProtocol[2500] = DefaultFeeProtocol({feeProtocol0: 10000, feeProtocol1: 10000});
         emit FeeAmountEnabled(2500, 50);
         emit FeeAmountExtraInfoUpdated(2500, false, true);
+        emit FeeDefaultProtocolUpdated(2500, 10000, 10000);
+
         feeAmountTickSpacing[10000] = 200;
         feeAmountTickSpacingExtraInfo[10000] = TickSpacingExtraInfo({whitelistRequested: false, enabled: true});
+        feeDefaultProtocol[10000] = DefaultFeeProtocol({feeProtocol0: 10000, feeProtocol1: 10000});
         emit FeeAmountEnabled(10000, 200);
         emit FeeAmountExtraInfoUpdated(10000, false, true);
+        emit FeeDefaultProtocolUpdated(10000, 10000, 10000);
     }
 
     /// @inheritdoc IPancakeV3Factory
@@ -69,6 +89,8 @@ contract MancakeV3Factory is IPancakeV3Factory {
         }
         require(getPool[token0][token1][fee] == address(0));
         pool = IPancakeV3PoolDeployer(poolDeployer).deploy(address(this), token0, token1, fee, tickSpacing);
+        DefaultFeeProtocol memory defaultInfo = feeDefaultProtocol[fee];
+        IPancakeV3Pool(pool).setFeeProtocol(defaultInfo.feeProtocol0, defaultInfo.feeProtocol1); // override fee protocol with default values
         getPool[token0][token1][fee] = pool;
         // populate mapping in the reverse direction, deliberate choice to avoid the cost of comparing addresses
         getPool[token1][token0][fee] = pool;
@@ -92,6 +114,7 @@ contract MancakeV3Factory is IPancakeV3Factory {
 
         feeAmountTickSpacing[fee] = tickSpacing;
         feeAmountTickSpacingExtraInfo[fee] = TickSpacingExtraInfo({whitelistRequested: false, enabled: true});
+        feeDefaultProtocol[100] = DefaultFeeProtocol({feeProtocol0: 10000, feeProtocol1: 10000});
         emit FeeAmountEnabled(fee, tickSpacing);
         emit FeeAmountExtraInfoUpdated(fee, false, true);
     }
@@ -113,6 +136,15 @@ contract MancakeV3Factory is IPancakeV3Factory {
             enabled: enabled
         });
         emit FeeAmountExtraInfoUpdated(fee, whitelistRequested, enabled);
+    }
+
+    /// @inheritdoc IPancakeV3Factory
+    function setFeeDefaultProtocol(uint24 fee, uint32 feeProtocol0, uint32 feeProtocol1) public override onlyOwner {
+        require(feeAmountTickSpacing[fee] != 0);
+        require(feeProtocol0 <= 10000 && feeProtocol1 <= 10000);
+
+        feeDefaultProtocol[fee] = DefaultFeeProtocol({feeProtocol0: feeProtocol0, feeProtocol1: feeProtocol1});
+        emit FeeDefaultProtocolUpdated(fee, feeProtocol0, feeProtocol1);
     }
 
     function setLmPoolDeployer(address _lmPoolDeployer) external override onlyOwner {
