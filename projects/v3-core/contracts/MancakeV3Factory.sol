@@ -89,8 +89,6 @@ contract MancakeV3Factory is IPancakeV3Factory {
         }
         require(getPool[token0][token1][fee] == address(0));
         pool = IPancakeV3PoolDeployer(poolDeployer).deploy(address(this), token0, token1, fee, tickSpacing);
-        DefaultFeeProtocol memory defaultInfo = feeDefaultProtocol[fee];
-        IPancakeV3Pool(pool).setFeeProtocol(defaultInfo.feeProtocol0, defaultInfo.feeProtocol1); // override fee protocol with default values
         getPool[token0][token1][fee] = pool;
         // populate mapping in the reverse direction, deliberate choice to avoid the cost of comparing addresses
         getPool[token1][token0][fee] = pool;
@@ -114,7 +112,7 @@ contract MancakeV3Factory is IPancakeV3Factory {
 
         feeAmountTickSpacing[fee] = tickSpacing;
         feeAmountTickSpacingExtraInfo[fee] = TickSpacingExtraInfo({whitelistRequested: false, enabled: true});
-        feeDefaultProtocol[100] = DefaultFeeProtocol({feeProtocol0: 10000, feeProtocol1: 10000});
+        feeDefaultProtocol[fee] = DefaultFeeProtocol({feeProtocol0: 10000, feeProtocol1: 10000});
         emit FeeAmountEnabled(fee, tickSpacing);
         emit FeeAmountExtraInfoUpdated(fee, false, true);
     }
@@ -138,7 +136,6 @@ contract MancakeV3Factory is IPancakeV3Factory {
         emit FeeAmountExtraInfoUpdated(fee, whitelistRequested, enabled);
     }
 
-    /// @inheritdoc IPancakeV3Factory
     function setFeeDefaultProtocol(uint24 fee, uint32 feeProtocol0, uint32 feeProtocol1) public override onlyOwner {
         require(feeAmountTickSpacing[fee] != 0);
         require(feeProtocol0 <= 10000 && feeProtocol1 <= 10000);

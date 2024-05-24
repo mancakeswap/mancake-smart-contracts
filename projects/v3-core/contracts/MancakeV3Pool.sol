@@ -282,13 +282,15 @@ contract MancakeV3Pool is IPancakeV3Pool {
 
         (uint16 cardinality, uint16 cardinalityNext) = observations.initialize(_blockTimestamp());
 
+        (uint32 feeProtocol0, uint32 feeProtocol1) = IPancakeV3Factory(factory).feeDefaultProtocol(fee);
+
         slot0 = Slot0({
             sqrtPriceX96: sqrtPriceX96,
             tick: tick,
             observationIndex: 0,
             observationCardinality: cardinality,
             observationCardinalityNext: cardinalityNext,
-            feeProtocol: 655370000, // default value for all pools, 10000:10000 (100% protocol fee), store 2 uint32 inside
+            feeProtocol: feeProtocol0 + (feeProtocol1 << 16),
             unlocked: true
         });
 
