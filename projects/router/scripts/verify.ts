@@ -1,6 +1,5 @@
 import { network } from 'hardhat'
 import { verifyContract } from '@pancakeswap/common/verify'
-import { sleep } from '@pancakeswap/common/sleep'
 import { configs } from '@pancakeswap/common/config'
 
 async function main() {
@@ -18,7 +17,6 @@ async function main() {
   // Verify SmartRouterHelper
   console.log('Verify SmartRouterHelper')
   await verifyContract(deployedContracts_smart_router.SmartRouterHelper)
-  await sleep(10000)
 
   // Verify swapRouter
   console.log('Verify swapRouter')
@@ -31,7 +29,6 @@ async function main() {
     deployedContracts_stableswap.StableSwapInfo,
     config.WNATIVE,
   ])
-  await sleep(10000)
 
   // Verify mixedRouteQuoterV1
   console.log('Verify mixedRouteQuoterV1')
@@ -42,7 +39,6 @@ async function main() {
     deployedContracts_stableswap.StableSwapFactory,
     config.WNATIVE,
   ])
-  await sleep(10000)
 
   // Verify quoterV2
   console.log('Verify quoterV2')
@@ -51,7 +47,6 @@ async function main() {
     deployedContracts_v3_core.V3Factory,
     config.WNATIVE,
   ])
-  await sleep(10000)
 
   // Verify tokenValidator
   console.log('Verify tokenValidator')
@@ -59,7 +54,6 @@ async function main() {
     config.v2Factory,
     deployedContracts_v3_periphery.NonfungiblePositionManager,
   ])
-  await sleep(10000)
 }
 
 main()

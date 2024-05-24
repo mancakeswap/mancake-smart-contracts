@@ -85,10 +85,15 @@ async function main() {
   await nonfungiblePositionManager.deployed()
   console.log('nonfungiblePositionManager', nonfungiblePositionManager.address)
 
-  const PancakeInterfaceMulticall = await ethers.getContractFactory('PancakeInterfaceMulticall')
-  const pancakeInterfaceMulticall = await PancakeInterfaceMulticall.deploy()
-  await pancakeInterfaceMulticall.deployed()
-  console.log('PancakeInterfaceMulticall', pancakeInterfaceMulticall.address)
+  // const PancakeInterfaceMulticall = await ethers.getContractFactory('PancakeInterfaceMulticall')
+  // const pancakeInterfaceMulticall = await PancakeInterfaceMulticall.deploy()
+  // await pancakeInterfaceMulticall.deployed()
+  // console.log('PancakeInterfaceMulticall', pancakeInterfaceMulticall.address)
+
+  const MancakeInterfaceMulticallV2 = await ethers.getContractFactory('MancakeInterfaceMulticallV2')
+  const mancakeInterfaceMulticallV2 = await MancakeInterfaceMulticallV2.deploy()
+  await mancakeInterfaceMulticallV2.deployed()
+  console.log('MancakeInterfaceMulticallV2', mancakeInterfaceMulticallV2.address)
 
   const V3Migrator = await ethers.getContractFactory('V3Migrator')
   const v3Migrator = await V3Migrator.deploy(
@@ -111,7 +116,7 @@ async function main() {
   console.log('QuoterV2', quoterV2.address)
 
   const contracts = {
-    // SwapRouter: swapRouter.address,
+    SwapRouter: swapRouter.address,
     V3Migrator: v3Migrator.address,
     QuoterV2: quoterV2.address,
     TickLens: tickLens.address,
@@ -119,7 +124,8 @@ async function main() {
     NFTDescriptorEx: nftDescriptorEx.address,
     NonfungibleTokenPositionDescriptor: nonfungibleTokenPositionDescriptor.address,
     NonfungiblePositionManager: nonfungiblePositionManager.address,
-    PancakeInterfaceMulticall: pancakeInterfaceMulticall.address,
+    // PancakeInterfaceMulticall: pancakeInterfaceMulticall.address,
+    MulticallV2: mancakeInterfaceMulticallV2.address,
   }
 
   fs.writeFileSync(`./deployed/${networkName}.json`, JSON.stringify(contracts, null, 2))

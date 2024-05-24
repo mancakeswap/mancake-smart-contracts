@@ -47,16 +47,6 @@ async function main() {
   )
   console.log('SmartRouter deployed to:', smartRouter.address)
 
-  // await tryVerify(smartRouter, [
-  //   config.v2Factory,
-  //   v3PoolDeployer_address,
-  //   v3Factory_address,
-  //   positionManager_address,
-  //   stableSwapFactory_address,
-  //   stableSwapInfo_address,
-  //   config.WNATIVE,
-  // ])
-
   /** MixedRouteQuoterV1 */
   const MixedRouteQuoterV1 = await ethers.getContractFactory('MixedRouteQuoterV1', {
     libraries: {
@@ -71,14 +61,6 @@ async function main() {
     config.WNATIVE
   )
   console.log('MixedRouteQuoterV1 deployed to:', mixedRouteQuoterV1.address)
-
-  // await tryVerify(mixedRouteQuoterV1, [
-  //   v3PoolDeployer_address,
-  //   v3Factory_address,
-  //   config.v2Factory,
-  //   stableSwapFactory_address,
-  //   config.WNATIVE,
-  // ])
 
   /** QuoterV2 */
   const QuoterV2 = await ethers.getContractFactory('QuoterV2', {

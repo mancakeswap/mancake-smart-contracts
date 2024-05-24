@@ -2,6 +2,8 @@ import { ethers, network } from 'hardhat'
 import { configs } from '@pancakeswap/common/config'
 import fs from 'fs'
 
+import { abi as MasterChefV3ABI } from '@pancakeswap/masterchef-v3/artifacts/contracts/MasterChefV3.sol/MasterChefV3.json'
+
 async function main() {
   const [owner] = await ethers.getSigners()
   // Remember to update the init code hash in SC for different chains before deploying
@@ -10,6 +12,8 @@ async function main() {
   if (!config) {
     throw new Error(`No config found for network ${networkName}`)
   }
+
+  let tx
 
   const mcV3DeployedContracts = await import(`@pancakeswap/masterchef-v3/deployed/${networkName}.json`)
 
@@ -23,6 +27,11 @@ async function main() {
   )
   await v3receiver.deployed()
   console.log('v3receiver deployed to:', v3receiver.address)
+
+  const mcv3 = await ethers.getContractAt(MasterChefV3ABI, mcV3DeployedContracts.MasterChefV3, owner)
+  tx = await mcv3.setReceiver(v3receiver.address)
+  await tx.wait(5)
+  console.log('MasterChefV3 setReceiver:', tx.hash)
 
   const contracts = {
     MasterChefV3Receiver: v3receiver.address,

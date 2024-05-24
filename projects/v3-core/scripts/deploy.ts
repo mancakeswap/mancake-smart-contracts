@@ -23,6 +23,7 @@ async function main() {
 
   // Set FactoryAddress for v3PoolDeployer.
   await v3PoolDeployer.setFactoryAddress(v3Factory.address, config.txConfig)
+  console.log('FactoryAddress set for v3PoolDeployer', v3Factory.address)
 
   const contracts = {
     V3Factory: v3Factory.address,

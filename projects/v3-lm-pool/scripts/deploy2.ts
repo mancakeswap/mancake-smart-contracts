@@ -1,12 +1,8 @@
 import { ethers, network } from 'hardhat'
 import { configs } from '@pancakeswap/common/config'
-import { tryVerify } from '@pancakeswap/common/verify'
 import fs from 'fs'
-import { abi as MancakeV3Factory } from '@pancakeswap/v3-core/artifacts/contracts/MancakeV3Factory.sol/MancakeV3Factory.json'
-import { abi as MasterChefV3 } from '@pancakeswap/masterchef-v3/artifacts/contracts/MasterChefV3.sol/MasterChefV3.json'
-
-import { parseEther } from 'ethers/lib/utils'
-const currentNetwork = network.name
+import { abi as MancakeV3FactoryABI } from '@pancakeswap/v3-core/artifacts/contracts/MancakeV3Factory.sol/MancakeV3Factory.json'
+import { abi as MasterChefV3ABI } from '@pancakeswap/masterchef-v3/artifacts/contracts/MasterChefV3.sol/MasterChefV3.json'
 
 async function main() {
   const [owner] = await ethers.getSigners()
@@ -24,14 +20,15 @@ async function main() {
 
   const V3LmPoolDeployer = await ethers.getContractFactory('MancakeV3LmPoolDeployer')
   const v3LmPoolDeployer = await V3LmPoolDeployer.deploy(mcV3DeployedContracts.MasterChefV3)
-
   console.log('v3LmPoolDeployer deployed to:', v3LmPoolDeployer.address)
 
-  const v3Factory = new ethers.Contract(v3Factory_address, MancakeV3Factory, owner)
+  const v3Factory = new ethers.Contract(v3Factory_address, MancakeV3FactoryABI, owner)
   await v3Factory.setLmPoolDeployer(v3LmPoolDeployer.address)
+  console.log('v3Factory setLmPoolDeployer to:', v3LmPoolDeployer.address)
 
-  const masterchefV3 = new ethers.Contract(mcV3DeployedContracts.MasterChefV3, MasterChefV3, owner)
+  const masterchefV3 = new ethers.Contract(mcV3DeployedContracts.MasterChefV3, MasterChefV3ABI, owner)
   await masterchefV3.setLMPoolDeployer(v3LmPoolDeployer.address)
+  console.log('masterchefV3 setLMPoolDeployer to:', v3LmPoolDeployer.address)
 
   const contracts = {
     V3LmPoolDeployer: v3LmPoolDeployer.address,

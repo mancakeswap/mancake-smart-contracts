@@ -47,6 +47,20 @@ const main = async () => {
   await revenueSharingPoolGateway.deployed()
   console.log('RevenueSharingPoolGateway deployed to:', revenueSharingPoolGateway.address)
 
+  let tx
+  tx = await gaugeVoting.addType('V2nStable', 0)
+  await tx.wait(5)
+  console.log('GaugeVoting addType V2nStable:', tx.hash)
+  tx = await gaugeVoting.addType('V3', 0)
+  await tx.wait(5)
+  console.log('GaugeVoting addType V3:', tx.hash)
+  tx = await gaugeVoting.addType('PM', 0)
+  await tx.wait(5)
+  console.log('GaugeVoting addType PM:', tx.hash)
+  tx = await gaugeVoting.addType('veMAN', 0)
+  await tx.wait(5)
+  console.log('GaugeVoting addType veMAN:', tx.hash)
+
   const contracts = {
     VEMan: veman.address,
     GaugeVoting: gaugeVoting.address,

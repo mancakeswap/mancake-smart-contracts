@@ -30,7 +30,7 @@ const LOWEST_OPTIMIZER_COMPILER_SETTINGS = {
     evmVersion: 'istanbul',
     optimizer: {
       enabled: true,
-      runs: 1_000,
+      runs: 100,
     },
     metadata: {
       bytecodeHash: 'none',
@@ -112,6 +112,7 @@ export default {
     ...(process.env.KEY_SEPOLIA && { sepolia }),
     ...(process.env.KEY_ETH && { eth }),
     ...(process.env.KEY_MANTLE && { mantle }),
+    ...(process.env.KEY_MANTLE && { mantleProd: mantle }),
     ...(process.env.KEY_MANTLE_TESTNET && { mantleTestnet }),
     tenderly,
     // mainnet: bscMainnet,
