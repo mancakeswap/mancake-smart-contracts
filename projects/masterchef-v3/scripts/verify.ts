@@ -2,7 +2,7 @@ import { verifyContract } from "@pancakeswap/common/verify";
 import { configs } from "@pancakeswap/common/config";
 import { ethers, network } from "hardhat";
 
-export const cakePerBlock = "40000000000000000000";
+export const cakePerBlock = "10000000000000000000";
 export const startBlock = 0;
 
 async function main() {

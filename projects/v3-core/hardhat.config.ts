@@ -6,9 +6,6 @@ import '@typechain/hardhat'
 import 'hardhat-watcher'
 import 'dotenv/config'
 import 'solidity-docgen'
-import * as tdly from '@tenderly/hardhat-tenderly'
-
-tdly.setup({ automaticVerifications: true })
 
 require('dotenv').config({ path: require('find-config')('.env') })
 
@@ -32,7 +29,7 @@ const LOWEST_OPTIMIZER_COMPILER_SETTINGS = {
     evmVersion: 'istanbul',
     optimizer: {
       enabled: true,
-      runs: 400,
+      runs: 100,
     },
     metadata: {
       bytecodeHash: 'none',
@@ -130,7 +127,11 @@ export default {
     privateVerification: true,
   },
   etherscan: {
-    apiKey: process.env.ETHERSCAN_API_KEY,
+    apiKey: {
+      mainnet: process.env.ETHERSCAN_API_KEY || '',
+      mantle: process.env.ETHERSCAN_API_KEY || '',
+      mantleProd: process.env.MANTLESCAN_API_KEY || '',
+    },
     customChains: [
       {
         network: 'mantleTestnet',
@@ -143,10 +144,26 @@ export default {
       {
         network: 'mantle',
         chainId: 5000,
+        // urls: {
+        //   apiURL: 'https://api.mantlescan.xyz/api',
+        //   browserURL: 'https://mantlescan.xyz',
+        // },
         urls: {
           apiURL: 'https://explorer.mantle.xyz/api',
           browserURL: 'https://explorer.mantle.xyz',
         },
+      },
+      {
+        network: 'mantleProd',
+        chainId: 5000,
+        urls: {
+          apiURL: 'https://api.mantlescan.xyz/api',
+          browserURL: 'https://mantlescan.xyz',
+        },
+        // urls: {
+        //   apiURL: 'https://explorer.mantle.xyz/api',
+        //   browserURL: 'https://explorer.mantle.xyz',
+        // },
       },
     ],
   },

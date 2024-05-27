@@ -10,6 +10,7 @@ const networks = {
   hardhat: 'hardhat',
   tenderly: 'tenderly',
   mantle: 'mantle',
+  mantleProd: 'mantleProd',
   mantleTestnet: 'mantleTestnet',
 }
 

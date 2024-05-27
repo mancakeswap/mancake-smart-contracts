@@ -118,7 +118,11 @@ export default {
     // mainnet: bscMainnet,
   },
   etherscan: {
-    apiKey: process.env.ETHERSCAN_API_KEY || '',
+    apiKey: {
+      mainnet: process.env.ETHERSCAN_API_KEY || '',
+      mantle: process.env.MANTLESCAN_API_KEY || '',
+      mantleProd: process.env.MANTLESCAN_API_KEY || '',
+    },
     customChains: [
       {
         network: 'mantleTestnet',
@@ -132,8 +136,16 @@ export default {
         network: 'mantle',
         chainId: 5000,
         urls: {
-          apiURL: 'https://explorer.mantle.xyz/api',
-          browserURL: 'https://explorer.mantle.xyz',
+          apiURL: 'https://api.mantlescan.xyz/api',
+          browserURL: 'https://mantlescan.xyz',
+        },
+      },
+      {
+        network: 'mantleProd',
+        chainId: 5000,
+        urls: {
+          apiURL: 'https://api.mantlescan.xyz/api',
+          browserURL: 'https://mantlescan.xyz',
         },
       },
     ],

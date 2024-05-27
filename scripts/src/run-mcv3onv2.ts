@@ -1,20 +1,22 @@
 import { ethers, network } from 'hardhat'
+import { abi as ERC20ABI } from '@openzeppelin/contracts/build/contracts/IERC20.json'
 
 import { abi as MasterChefABI } from '@pancakeswap/masterchef-v3/artifacts/contracts/MasterChef.sol/MasterChef.json'
 import { abi as MasterChefV2ABI } from '@pancakeswap/masterchef-v3/artifacts/contracts/MasterChefV2.sol/MasterChefV2.json'
 import { abi as MasterChefV3ABI } from '@pancakeswap/masterchef-v3/artifacts/contracts/MasterChefV3.sol/MasterChefV3.json'
-
 import { abi as MasterChefV3ReceiverABI } from '@pancakeswap/fee/artifacts/contracts/receiver/MasterChefV3Receiver.sol/MasterChefV3Receiver.json'
-
-import { abi as ERC20ABI } from '@openzeppelin/contracts/build/contracts/IERC20.json'
+import { configs } from '@pancakeswap/common/config'
 
 async function main() {
   const [owner] = await ethers.getSigners()
   const networkName = network.name
 
-  let tx
+  const config = configs[networkName as keyof typeof configs]
+  if (!config) {
+    throw new Error(`No config found for network ${networkName}`)
+  }
 
-  const DUMMY = '0xFA9f37c1e7fe536130AF6b82B38B16fBAFF07266'
+  let tx
 
   const mc = await import(`@pancakeswap/masterchef-v3/deployed/${networkName}.json`)
   const masterchef = new ethers.Contract(mc.MasterChef, MasterChefABI, owner)
@@ -24,17 +26,19 @@ async function main() {
   const fee = await import(`@pancakeswap/fee/deployed/${networkName}.json`)
   const masterchefv3receiver = new ethers.Contract(fee.MasterChefV3Receiver, MasterChefV3ReceiverABI, owner)
 
-  // tx = await masterchefv2.add(100, DUMMY, false, false)
-  // await tx.wait(5)
-  // console.log('MasterChefv2 add:', tx.hash)
+  const DUMMY = config.dummy.MCV2toV3
 
-  // const dMCV2toV3 = new ethers.Contract(DUMMY, ERC20ABI, owner)
-  // tx = await dMCV2toV3.approve(
-  //   masterchefv3receiver.address,
-  //   '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'
-  // )
-  // await tx.wait(5)
-  // console.log('dMCV2toV3 approve:', tx.hash)
+  tx = await masterchefv2.add(1, DUMMY, false, false)
+  await tx.wait(5)
+  console.log('MasterChefv2 add:', tx.hash)
+
+  const dMCV2toV3 = new ethers.Contract(DUMMY, ERC20ABI, owner)
+  tx = await dMCV2toV3.approve(
+    masterchefv3receiver.address,
+    '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'
+  )
+  await tx.wait(5)
+  console.log('dMCV2toV3 approve:', tx.hash)
 
   tx = await masterchefv2.updateWhiteList(masterchefv3receiver.address, true)
   await tx.wait(5)

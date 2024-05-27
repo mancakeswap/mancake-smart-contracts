@@ -10,6 +10,8 @@ import { abi as ERC20ABI } from '@openzeppelin/contracts/build/contracts/IERC20.
 
 import { abi as GaugeVotingABI } from '@pancakeswap/voter/artifacts/contracts/GaugeVoting.sol/GaugeVoting.json'
 
+const REV_SHARE_EMISSION = '0x'
+
 async function main() {
   const [owner] = await ethers.getSigners()
   const networkName = network.name
@@ -25,7 +27,7 @@ async function main() {
   const gaugeVoting = new ethers.Contract(voter.GaugeVoting, GaugeVotingABI, owner)
 
   tx = await gaugeVoting.addGauge(
-    '0xe4Fd52Ea969075DeADefA5d14DB86Ef353aB1E7E', // rev share pool
+    REV_SHARE_EMISSION, // rev share pool
     3,
     0,
     1,
@@ -37,14 +39,14 @@ async function main() {
   await tx.wait(5)
   console.log('GaugeVoting addGauge:', tx.hash)
 
-  const LP = '0xf805d18e057450182df1b877319497344586dbc8'
-  tx = await masterchefv2.add(100, LP, true, false)
-  await tx.wait(5)
-  console.log('MasterChefv2 add:', tx.hash)
+  // const LP = '0xf805d18e057450182df1b877319497344586dbc8'
+  // tx = await masterchefv2.add(100, LP, true, false)
+  // await tx.wait(5)
+  // console.log('MasterChefv2 add:', tx.hash)
 
-  tx = await gaugeVoting.addGauge(LP, 0, 0, 2, masterchefv2.address, 5000, 1, 3000)
-  await tx.wait(5)
-  console.log('GaugeVoting addGauge:', tx.hash)
+  // tx = await gaugeVoting.addGauge(LP, 0, 0, 2, masterchefv2.address, 5000, 1, 3000)
+  // await tx.wait(5)
+  // console.log('GaugeVoting addGauge:', tx.hash)
 }
 
 main()

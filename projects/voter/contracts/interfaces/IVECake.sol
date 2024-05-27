@@ -64,11 +64,6 @@ interface IVECake {
     /// @param _user The address of a user
     function balanceOf(address _user) external view returns (uint256);
 
-    /// @notice Delegate from cake pool.
-    /// @dev this function will call one function in delegator smart contract, like this: DelegatorSC.delegate(address user, uint256 amount, uint256 endTime).
-    /// @param _delegator delegator address
-    function delegateFromCakePool(address _delegator) external;
-
     /// @notice Create a new lock.
     /// @dev This will crate a new lock and deposit Cake to VECake Vault
     /// @param _amount the amount that user wishes to deposit

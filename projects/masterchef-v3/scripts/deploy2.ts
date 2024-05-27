@@ -25,7 +25,7 @@ async function main() {
   const burner = config.burner === ethers.constants.AddressZero ? owner.address : config.burner;
 
   const v3PeripheryDeployedContracts = await import(`@pancakeswap/v3-periphery/deployed/${networkName}.json`);
-  const masterchefV3DeployedContracts = await import(`@pancakeswap/masterchef-v3/deployed/${networkName}.json`);
+  // const masterchefV3DeployedContracts = await import(`@pancakeswap/masterchef-v3/deployed/${networkName}.json`);
 
   const Mancake = await ethers.getContractFactory("MancakeToken");
   const mancake = await Mancake.deploy();

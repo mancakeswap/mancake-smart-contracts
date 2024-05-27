@@ -50,6 +50,7 @@ const config: HardhatUserConfig = {
     ...(process.env.KEY_MAINNET && { bscMainnet }),
     ...(process.env.KEY_SEPOLIA && { sepolia }),
     ...(process.env.KEY_MANTLE && { mantle }),
+    ...(process.env.KEY_MANTLE && { mantleProd: mantle }),
     ...(process.env.KEY_MANTLE_TESTNET && { mantleTestnet }),
     tenderly,
     // testnet: bscTestnet,

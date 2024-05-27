@@ -62,14 +62,8 @@ interface IPancakeV3Factory {
     /// @dev A fee amount can never be removed, so this value should be hard coded or cached in the calling context
     /// @param fee The enabled fee, denominated in hundredths of a bip. Returns 0 in case of unenabled fee
     /// @return whitelistRequested The flag whether should be created by white list users only
-    /// @return enabled The flag is the fee is enabled or not
     function feeAmountTickSpacingExtraInfo(uint24 fee) external view returns (bool whitelistRequested, bool enabled);
 
-    /// @notice Returns the default fee protocol
-    /// @dev A fee amount can never be removed, so this value should be hard coded or cached in the calling context
-    /// @param fee The enabled fee, denominated in hundredths of a bip. Returns 0 in case of unenabled fee
-    /// @return feeProtocol0 The default fee protocol token0
-    /// @return feeProtocol1 The default fee protocol token1
     function feeDefaultProtocol(uint24 fee) external view returns (uint32 feeProtocol0, uint32 feeProtocol1);
 
     /// @notice Returns the pool address for a given pair of tokens and a fee, or address 0 if it does not exist
@@ -112,10 +106,6 @@ interface IPancakeV3Factory {
     /// @param enabled The flag is the fee is enabled or not
     function setFeeAmountExtraInfo(uint24 fee, bool whitelistRequested, bool enabled) external;
 
-    /// @notice Set a fee amount extra info
-    /// @dev Fee amounts can be updated by owner with default protocol fee
-    /// @param feeProtocol0 The default fee protocol token0
-    /// @param feeProtocol1 The default fee protocol token1
     function setFeeDefaultProtocol(uint24 fee, uint32 feeProtocol0, uint32 feeProtocol1) external;
 
     function setLmPoolDeployer(address _lmPoolDeployer) external;

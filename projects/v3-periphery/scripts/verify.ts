@@ -3,6 +3,17 @@ import { verifyContract } from '@pancakeswap/common/verify'
 import { sleep } from '@pancakeswap/common/sleep'
 import { configs } from '@pancakeswap/common/config'
 
+function isAscii(str: string): boolean {
+  return /^[\x00-\x7F]*$/.test(str)
+}
+function asciiStringToBytes32(str: string): string {
+  if (str.length > 32 || !isAscii(str)) {
+    throw new Error('Invalid label, must be less than 32 characters')
+  }
+
+  return '0x' + Buffer.from(str, 'ascii').toString('hex').padEnd(64, '0')
+}
+
 async function main() {
   const networkName = network.name
   const config = configs[networkName as keyof typeof configs]
@@ -17,7 +28,11 @@ async function main() {
   await verifyContract(deployedContracts_v3_periphery.NFTDescriptorEx)
 
   console.log('Verify nonfungibleTokenPositionDescriptor')
-  await verifyContract(deployedContracts_v3_periphery.NonfungibleTokenPositionDescriptor)
+  await verifyContract(deployedContracts_v3_periphery.NonfungibleTokenPositionDescriptor, [
+    config.WNATIVE,
+    asciiStringToBytes32(config.nativeCurrencyLabel),
+    deployedContracts_v3_periphery.NFTDescriptorEx,
+  ])
 
   console.log('Verify NonfungiblePositionManager')
   await verifyContract(deployedContracts_v3_periphery.NonfungiblePositionManager, [
@@ -43,6 +58,13 @@ async function main() {
 
   console.log('Verify QuoterV2')
   await verifyContract(deployedContracts_v3_periphery.QuoterV2, [
+    deployedContracts_v3_core.V3PoolDeployer,
+    deployedContracts_v3_core.V3Factory,
+    config.WNATIVE,
+  ])
+
+  console.log('Verify SwapRouter')
+  await verifyContract(deployedContracts_v3_periphery.SwapRouter, [
     deployedContracts_v3_core.V3PoolDeployer,
     deployedContracts_v3_core.V3Factory,
     config.WNATIVE,

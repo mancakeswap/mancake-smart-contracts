@@ -11,7 +11,6 @@ async function main() {
   const outputCodeHash = await OutputCodeHash.deploy()
   console.log('outputCodeHash', outputCodeHash.address)
 
-  // deployer must set factory address
   const hash = await outputCodeHash.getInitCodeHash()
   console.log('hash: ', hash)
 }

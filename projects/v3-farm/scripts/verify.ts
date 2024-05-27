@@ -18,7 +18,7 @@ async function main() {
   const farmDeployedContracts = await import(`@pancakeswap/v3-farm/deployed/${networkName}.json`)
 
   console.log('Verify farm booster')
-  await verifyContract(farmDeployedContracts.V3FarmBooster, [
+  await verifyContract(farmDeployedContracts.FarmBooster, [
     voterDeployedContracts.VEMan,
     mcV3DeployedContracts.MasterChefV3,
     cA,
