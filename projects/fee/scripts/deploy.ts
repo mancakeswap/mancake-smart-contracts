@@ -13,8 +13,6 @@ async function main() {
     throw new Error(`No config found for network ${networkName}`)
   }
 
-  let tx
-
   const mcV3DeployedContracts = await import(`@pancakeswap/masterchef-v3/deployed/${networkName}.json`)
 
   const MasterChefV3Receiver = await ethers.getContractFactory('MasterChefV3Receiver')
@@ -28,6 +26,7 @@ async function main() {
   await v3receiver.deployed()
   console.log('v3receiver deployed to:', v3receiver.address)
 
+  let tx
   const mcv3 = await ethers.getContractAt(MasterChefV3ABI, mcV3DeployedContracts.MasterChefV3, owner)
   tx = await mcv3.setReceiver(v3receiver.address)
   await tx.wait(5)

@@ -1,11 +1,11 @@
-import { HardhatUserConfig } from 'hardhat/config'
+import type { HardhatUserConfig, NetworkUserConfig } from 'hardhat/types'
 import '@nomiclabs/hardhat-ethers'
 import '@nomicfoundation/hardhat-verify'
-import '@nomiclabs/hardhat-waffle'
+import '@nomicfoundation/hardhat-chai-matchers'
+import '@openzeppelin/hardhat-upgrades'
 import '@typechain/hardhat'
+import 'hardhat-watcher'
 import 'dotenv/config'
-import { NetworkUserConfig } from 'hardhat/types'
-import 'solidity-docgen'
 
 require('dotenv').config({ path: require('find-config')('.env') })
 
@@ -58,7 +58,8 @@ const tenderly: NetworkUserConfig = {
   accounts: [process.env.KEY_TENDERLY!],
 }
 
-const config: HardhatUserConfig = {
+export default {
+  defaultNetwork: 'hardhat',
   solidity: {
     compilers: [
       {
@@ -70,10 +71,34 @@ const config: HardhatUserConfig = {
           },
         },
       },
+      {
+        version: '0.8.24',
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 100,
+          },
+        },
+      },
     ],
   },
   networks: {
-    hardhat: {},
+    hardhat: {
+      chainId: 5000,
+      hardfork: 'london',
+      forking: {
+        enabled: true,
+        url: process.env.MANTLE_FORK_URL || 'https://mantle-rpc.publicnode.com',
+        ignoreUnknownTxType: true,
+      },
+      chains: {
+        5000: {
+          hardforkHistory: {
+            london: 59724380,
+          },
+        },
+      },
+    },
     ...(process.env.KEY_TESTNET && { bscTestnet }),
     ...(process.env.KEY_MAINNET && { bscMainnet }),
     ...(process.env.KEY_GOERLI && { goerli }),
@@ -85,7 +110,11 @@ const config: HardhatUserConfig = {
     tenderly,
   },
   etherscan: {
-    apiKey: process.env.ETHERSCAN_API_KEY,
+    apiKey: {
+      mainnet: process.env.ETHERSCAN_API_KEY || '',
+      mantle: process.env.MANTLESCAN_API_KEY || '',
+      mantleProd: process.env.MANTLESCAN_API_KEY || '',
+    },
     customChains: [
       {
         network: 'mantleTestnet',
@@ -99,18 +128,31 @@ const config: HardhatUserConfig = {
         network: 'mantle',
         chainId: 5000,
         urls: {
-          apiURL: 'https://explorer.mantle.xyz/api',
-          browserURL: 'https://explorer.mantle.xyz',
+          apiURL: 'https://api.mantlescan.xyz/api',
+          browserURL: 'https://mantlescan.xyz',
+        },
+      },
+      {
+        network: 'mantleProd',
+        chainId: 5000,
+        urls: {
+          apiURL: 'https://api.mantlescan.xyz/api',
+          browserURL: 'https://mantlescan.xyz',
         },
       },
     ],
   },
+  watcher: {
+    test: {
+      tasks: [{ command: 'test', params: { testFiles: ['{path}'] } }],
+      files: ['./test/**/*'],
+      verbose: true,
+    },
+  },
   paths: {
-    sources: './contracts/',
+    sources: './contracts',
     tests: './test',
     cache: './cache',
     artifacts: './artifacts',
   },
 }
-
-export default config
